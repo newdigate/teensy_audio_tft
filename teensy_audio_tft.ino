@@ -1,5 +1,5 @@
 // Color TFT 320x240 (ILI9341) Audio Spectrum Analyzer Display
-// 
+// Copied and modified from original repository https://github.com/PaulStoffregen/Audio 
 //
 // This example code is in the public domain.
 
