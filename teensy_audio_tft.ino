@@ -39,13 +39,14 @@ const int myInput = AUDIO_INPUT_LINEIN;
 #define TFT_MISO    12
 ILI9341_t3 tft = ILI9341_t3(TFT_CS, TFT_DC, TFT_RST, TFT_MOSI, TFT_SCLK, TFT_MISO);
 
-// Run setup once
 void setup() {
   Serial.begin(9600);
+
+  // Wait until UART connection is established
   while (!Serial) {
     delay(10);
   }
-  Serial.println("Initialing Soundcard...");
+  Serial.println("Initialing tft display...");
   
   // set up the TFT screen
   SPI.setMOSI(TFT_MOSI);
@@ -53,7 +54,7 @@ void setup() {
   tft.begin();
   tft.fillScreen(ILI9341_BLACK);
 
-  Serial.println("Initialing Soundcard complete...");
+  Serial.println("Initialing tft display complete...");
 
   // start the audio library
   AudioMemory(24);
@@ -61,70 +62,27 @@ void setup() {
   audioShield.inputSelect(myInput);
   
   audioShield.volume(1);
-  Serial.print("volume()");
-  //fft1024.averageTogether(160);
-   queue1.begin();
-}
 
-unsigned int line[320];
-unsigned int previous[320];
+  //fft1024.averageTogether(160);
+  queue1.begin();
+  Serial.print("Audio initialized");
+}
 
 int8_t wave_buf_l[128]; 
 int8_t wave_buf_r[128]; 
 
-int8_t color = 0; 
-
-uint16_t Color565(uint8_t r, uint8_t g, uint8_t b) {
-  return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
-}
-
-uint16_t Wheel(byte WheelPos) {
-  WheelPos = 255 - WheelPos;
-  if(WheelPos < 85) {
-    return Color565(255 - WheelPos * 3, 0, WheelPos * 3);
-  }
-  if(WheelPos < 170) {
-    WheelPos -= 85;
-    return Color565(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
-  WheelPos -= 170;
-  return Color565(WheelPos * 3, 255 - WheelPos * 3, 0);
-}
-
 // Run repetitively
 void loop() {
-  unsigned int y;
-
-//  if (fft1024.available()) {
-//    //Serial.println("fft...");
-//    // first, grab the first 320 frequency bins
-//    for (y=0; y < 320; y++) {
-//      previous[y] = line[y];
-//      line[y] = fft1024.read(y) * 240.0 * 5;
-//      if (line[y] > 240) line[y] = 240;
-//    }
-//
-//    // draw horizontal lines for each frequency
-//    for (y=0; y < 320; y++) {
-//      //tft.drawPixel(previous[y], y, ILI9341_BLACK);
-//      if (line[y] > 0) {        
-//        //tft.drawFastHLine(0, y, line[y], ILI9341_YELLOW);
-//        tft.drawPixel(line[y], y, ILI9341_YELLOW);
-//      }
-//    }
-//  }
-  
   if (queue1.available()) {
-      //tft.fillScreen(ILI9341_BLACK);
+   
     int16_t *buf = queue1.readBuffer();
     for (int k =0; k<128; k++) {
-      //tft.drawPixel(k, wave_buf_l[k], ILI9341_BLACK);
       wave_buf_r[k] = wave_buf_l[k];
       wave_buf_l[k] = 64 - 64*buf[k]/2048; 
-      //tft.drawPixel(k, wave_buf_l[k], ILI9341_GREEN);  
     }
 
    for (int k =1; k<128; k++) {
+      //TODO: uncommenting the two lines below causes distorion when processing audio. 
       //tft.drawLine(k-1, wave_buf_r[k-1], k, wave_buf_r[k], ILI9341_BLACK);
       //tft.drawLine(k-1, wave_buf_l[k-1], k, wave_buf_l[k], Wheel(color));
     
@@ -132,13 +90,12 @@ void loop() {
    }
     
     for (int k =1; k<128; k++) {
+      //TODO: uncommenting the two lines below causes distorion when processing audio. 
       //tft.drawLine(k-1, wave_buf_r[k-1], k, wave_buf_r[k], ILI9341_GREEN);
       //tft.drawLine(k-1, wave_buf_l[k-1], k, wave_buf_l[k], Wheel(color));
     
-      tft.drawPixel(k, wave_buf_l[k], Wheel(color));  
-    }
-      color++;
+      tft.drawPixel(k, wave_buf_l[k], ILI9341_RED);  
+    }     
     queue1.freeBuffer();
   }
-
 }
