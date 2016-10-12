@@ -1,15 +1,13 @@
 // Color TFT 320x240 (ILI9341) Audio Spectrum Analyzer Display
-// Copied and modified from original repository https://github.com/PaulStoffregen/Audio 
-//
+// Copied and modified from original https://forum.pjrc.com/threads/24793-Audio-Library?p=55821&viewfull=1#post55821
+// see https://github.com/PaulStoffregen/Audio 
 // This example code is in the public domain.
-
 
 #include <ILI9341_t3.h>
 #include <Audio.h>
 #include <Wire.h>
 #include <SD.h>
 #include <SPI.h>
-
 
 // GUItool: begin automatically generated code
 AudioInputI2S            i2s1;           //xy=382,279
