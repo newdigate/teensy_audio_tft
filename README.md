@@ -11,3 +11,5 @@ Electronics projects using the [teensy 3.2](https://www.pjrc.com/store/teensy32.
 #define TFT_MOSI     7
 #define TFT_SCLK    14
 #define TFT_MISO    12
+```
+* original arduino source code from [this thread](https://forum.pjrc.com/threads/24793-Audio-Library?p=55821&viewfull=1#post55821) on pjrc forums...
