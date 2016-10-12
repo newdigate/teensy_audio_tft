@@ -7,4 +7,4 @@ Using teensy 3.2 with audio board and tft display
 #define TFT_RST    255  // 255 = unused, connect to 3.3V
 #define TFT_MOSI     7
 #define TFT_SCLK    14
-#define TFT_MISO    12```
+#define TFT_MISO    12
