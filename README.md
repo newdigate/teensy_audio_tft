@@ -1,4 +1,4 @@
-# Goals
+### Teensy audio display projects (work in progress)
 * Display waveform captured from the teensy audio board on the 2.2" tft display 
 * Process incomming audio while displaying incomming and/or outgoing audio on tft display 
 
