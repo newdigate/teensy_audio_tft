@@ -1,0 +1,1 @@
+rendered vectors to bitmaps
